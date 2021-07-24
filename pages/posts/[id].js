@@ -9,13 +9,15 @@ const Post = ({ postData }) => {
       { postData.id }
       <br />
       { postData.date }
+      <br />
+      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
     </Layout>
   )
 }
 
 // run second
-const getStaticProps = ({ params }) => {
-  const postData = getPostData(params.id);
+const getStaticProps = async ({ params }) => {
+  const postData = await getPostData(params.id);
   return {
     props: {
       postData
