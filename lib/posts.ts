@@ -25,14 +25,14 @@ const getSortedPostsDataFromFileSystem = () => {
     // combine the data with the id
     return {
       id,
-      ...matterResult.data
+      ...(matterResult.data as { date: string; title: string })
     }
   });
 
   // sort posts by date
-  return allPostsData.sort(({ date: a }, { date: b }) => {
-    if (a < b) return 1;
-    else if (a > b) return -1;
+  return allPostsData.sort(({ date: dateOfFirstPost }, { date: dateOfSecondPost }) => {
+    if (dateOfFirstPost < dateOfSecondPost) return 1;
+    else if (dateOfFirstPost > dateOfSecondPost) return -1;
     return 0;
   })
 }
@@ -52,7 +52,7 @@ const getAllPostIds = () => {
   })
 }
 
-const getPostData = async (id) => {
+const getPostData = async (id: string) => {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
@@ -69,7 +69,7 @@ const getPostData = async (id) => {
   return {
     id,
     contentHtml,
-    ...matterResult.data
+    ...(matterResult.data as { date: string; title: string })
   }
 }
 
